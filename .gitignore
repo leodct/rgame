@@ -1,0 +1,6 @@
+/.vscode
+/.vscode/settings.json
+/obj
+/lib
+/bin/*_debug
+/bin/*exe
