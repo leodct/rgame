@@ -184,7 +184,7 @@ namespace UI
     // --- BUTTON CLASS ---
     // --------------------
     /**
-     * @brief Basic button class.
+     * @brief ## Basic button class.
      */
     class Button : public UIElement {
     private:
@@ -250,41 +250,91 @@ namespace UI
     // -------------------
     // --- PANEL CLASS ---
     // -------------------
+    /**
+     * @brief ## Panel class.
+     */
     class Panel : public UIElement{
     private:
-        Color   col;
-        Color   edge_col;
-        Vector2 dimensions;
-        unsigned int edge_thickness;
+        Color   col;                 // Main panel colour.
+        Color   edge_col;            // Panel edge colour.
+        Vector2 dimensions;          // Panel dimensions.
+        unsigned int edge_thickness; // Panel edge thickness.
     public:
+        /**
+         * @brief Create a new `Panel` with default parameters. 
+         */
         Panel(Transform2D _transform = {}, Vector2 _dimensions = {0,0}, Color _col = {255, 255, 255, 255}, Color _edge_col = {255, 255, 255, 255}, unsigned int _edge_thickness = 0);
 
+        /**
+         * @brief Draw the panel.
+         */
         void Draw() const override;
+        /**
+         * @brief Update the panel.
+         */
         void Update() override;
     };
 
     // -------------------
     // --- LABEL CLASS ---
     // -------------------
+    /**
+     * @brief ## Label class.
+     * @brief Allows for drawing text as a `UIElement`.
+     */
     class Label : public UIElement{
     public:
+        /**
+         * @brief Determine whether the position given by the object's `transform` parameter is the `LEFT`, `MIDDLE` or `RIGHT`.
+         */
         enum class ALIGNMENT { LEFT, MIDDLE, RIGHT };
     protected:
-        Color text_col;
-        std::string text;
-        unsigned int text_size;
-        ALIGNMENT alignment;
+        Color text_col;         // Label text colour.
+        std::string text;       // Label content.
+        unsigned int text_size; // Label font size.
+        ALIGNMENT alignment;    // Label text alignment.
     public:
+        /**
+         * @brief Creates a new, empty `Label` object with default parameters.
+         */
         Label(Transform2D _transform = {}, std::string _text = "text", unsigned int _text_size = 1, Color _text_col = BLACK, ALIGNMENT _alignment = ALIGNMENT::LEFT);
 
+        /**
+         * @brief Get a reference to the text stored in the `Label`.
+         * @return A @b non-constant reference to the stored text.
+         */
         std::string       &GetText();
+        /**
+         * @brief Get a @b constant reference to the text stored in the `Label`.
+         * @return A @b constant reference to the stored text.
+         */
         const std::string &GetText() const;
+        /**
+         * @brief Change the stored text to a new string.
+         * @param _text New text to display in the `Label`.
+         */
         void               SetText(std::string _text);
 
+        /**
+         * @brief Get the `Label` object's `font_size`.
+         * @return An unsigned integer value that determines the font size.
+         */
         unsigned int       GetFontSize() const;
+        /**
+         * @brief Change the `Label` object's `font_size`.
+         * @param _size New size.
+         */
         void               SetFontSize(unsigned int _size);
 
+        /**
+         * @brief Check the `Label` object's text alignmnent.
+         * @return The `Label` object's `alignment` value.
+         */
         ALIGNMENT         GetAlignment() const;
+        /**
+         * @brief Change the `Label` object's alignment value.
+         * @param _alignment The `Label` object's new alignment value.
+         */
         void               SetAlignment(ALIGNMENT _alignment);
 
         Color              GetTextColor() const;
