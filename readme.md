@@ -21,7 +21,7 @@
 
 - [raylib](https://raylib.com): A simple and easy-to-use game programming library, used as the foundation of RGame.
 
-RGame is designed to work with **raylib** version X.X or newer. If you don't have it installed, follow the instructions on [raylib's website](https://raylib.com) to set it up.
+RGame is designed to work with **raylib** version 5.5 or newer. If you don't have it installed, follow the instructions on [raylib's website](https://raylib.com) to set it up.
 
 ---
 
