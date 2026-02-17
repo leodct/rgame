@@ -2,7 +2,7 @@
 #define UI_H
 
 #include <vector>
-#include "globals.hxx"
+#include "rgame-globals.hxx"
 #include <map>
 #include <functional>
 #include "gameObject.hxx"

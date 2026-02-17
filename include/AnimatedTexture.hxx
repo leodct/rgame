@@ -1,7 +1,7 @@
 #ifndef ANIMATED_TEXTURE_H
 #define ANIMATED_TEXTURE_H
 
-#include "globals.hxx"
+#include "rgame-globals.hxx"
 #include <chrono>
 
 

@@ -1,7 +1,7 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
-#include "globals.hxx"
+#include "rgame-globals.hxx"
 
 /**
  * @file GameObject.hxx

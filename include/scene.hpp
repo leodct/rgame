@@ -1,7 +1,7 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "globals.hxx"
+#include "rgame-globals.hxx"
 #include "UI.hpp"
 #include "gameObject.hxx"
 

@@ -1,4 +1,4 @@
-#include "globals.hxx"
+#include "rgame-globals.hxx"
 #include "scene.hpp"
 
 Camera2D camera = {};

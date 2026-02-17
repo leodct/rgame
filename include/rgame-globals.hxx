@@ -1,12 +1,12 @@
-#ifndef GLOBALS_H
-#define GLOBALS_H
+#ifndef RGLOBALS_H
+#define RGLOBALS_H
 #include "raylib.h"
 #include <filesystem>
 #include <vector>
 #include <iostream>
 
 /**
- * @file globals.hxx
+ * @file rgame-globals.hxx
  * @brief This file contains global constants, utility functions, and external references for the game system.
  * @details
  * This file defines some globally accessible constants, utility functions, and external variables used throughout the game system.
