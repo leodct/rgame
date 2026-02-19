@@ -56,7 +56,7 @@ const int MAX_DRAW_ORDER =  100; ///< The maximum value for drawing order (used 
  * - `scale`: A float value representing the scaling factor of the object, where `1.0f` is the default (no scaling).
  */
 
- struct Transform2D {
+ typedef struct Transform2D {
     /**
      * @brief The position of the object in 2D space.
      */
@@ -71,7 +71,7 @@ const int MAX_DRAW_ORDER =  100; ///< The maximum value for drawing order (used 
      * @brief The scaling factor of the object.
      */
     float scale = 1.0f;
-};
+} Transform2D;
 
 extern Camera2D camera; ///< Main camera to be used for rendering.
 

@@ -7,44 +7,39 @@
 #include <functional>
 #include "gameObject.hxx"
 
-
 /**
  * @file ui.hxx
  * @brief User Interface (UI) Element classes for managing and rendering UI components in a game engine.
- * 
+ *
  * This file provides a set of classes and structures for creating, managing, and rendering various UI components such as buttons, labels,
  * panels, and images. These components are derived from the `UIElement` class and are managed within containers for efficient rendering and interaction.
  * The UI elements can be displayed, updated, and manipulated through a flexible system that supports drawing order, enabling/disabling, and visibility toggling.
- * 
+ *
  * ## Classes:
  * - `UIElement`: A base class for all UI elements. Handles the common properties and functionality for UI components such as draw order, visibility, and enabling/disabling update logic.
  * - `UIContainer`: A container for managing and rendering multiple `UIElement` objects. It is responsible for the centralized management of UI elements, including updating and drawing all contained elements.
- * 
+ *
  * ## UI Components in the `UI` Namespace:
  * - `Button`: A clickable button that can be pressed and released.
  * - `Panel`: A rectangular UI element, useful for creating backgrounds or containers for other UI elements.
  * - `Label`: Displays text, supporting alignment and font size customization.
  * - `ImageDisplay`: Displays an image/texture at a specified position.
  * - `VariableDisplay`: A template class that displays the value of a variable, updating automatically when the variable changes.
- * 
+ *
  * ## Functionality:
  * - **UIElement Class**: Provides methods for enabling, disabling, and controlling the display and update logic of UI components. It also manages the drawing order for rendering.
  * - **UIContainer Class**: Manages multiple `UIElement` instances. It allows adding/removing elements, updating their states, and rendering them in a specific order.
  * - **Interaction**: Each `UIElement` has mechanisms for handling user interaction such as hovering, pressing, and releasing buttons, and for drawing different types of UI elements like text and images.
- * 
+ *
  * The system is designed to be flexible and extendable, allowing new UI elements to be added easily by inheriting from the `UIElement` class.
  */
-
 
 /**
  * @brief ## UI Element class
  * @brief Virtual parent class for all UI Elements. Contains generic methods to Enable/Disable, Show/Hide and modify the draw order.
  */
-class UIElement : public GameObject{
-protected:
-    int  draw_order; // Defines the drawing priority, if 2 elements have different draw orders the one with the higher order will be drawn above the other one.
-    bool active;     // Determines whether the `UIElement` should be drawn.
-    bool enabled;    // Determines whether the `UIElement` should update.
+class UIElement : public GameObject
+{
 public:
     /**
      * @brief Create a new, empty UIElement.
@@ -60,7 +55,7 @@ public:
      * @return An int `draw_order` that determines the drawing priority for the `UIElement`.
      * @note If 2 `UIElement` objects have different draw orders, the one with the highest order will be drawn above.
      */
-    int  GetDrawOrder() const;
+    int GetDrawOrder() const;
     /**
      * @brief Set the `UIElement`'s draw order.
      * @param _order An integer determining the new order.
@@ -102,7 +97,7 @@ public:
      * @return @b True if the next `Update()` call will run the update logic. @b False otherwise.
      */
     bool IsEnabled() const;
-    
+
     /**
      * @brief Draw the `UIElement`.
      */
@@ -111,6 +106,11 @@ public:
      * @brief Update the `UIElement`.
      */
     virtual void Update() = 0;
+
+protected:
+    int draw_order; // Defines the drawing priority, if 2 elements have different draw orders the one with the higher order will be drawn above the other one.
+    bool active;    // Determines whether the `UIElement` should be drawn.
+    bool enabled;   // Determines whether the `UIElement` should update.
 };
 
 /**
@@ -119,16 +119,9 @@ public:
  * @note The `UIContainer` class automatically manages the reserved memory of all it's `UIElement` objects. When given a
  * pointer to an object, said object's ownership will be passed to the respective `UIContainer` for centralized memory management.
  */
-class UIContainer {
-private:
-    /**
-     * @brief Container storing all `UIElement` objects and their `std::string` identifiers.
-     */
-    std::map<std::string, UIElement*> elements;
-    /**
-     * @brief Order in which the `UIContainer` will be drawn.
-     */
-    int draw_order;
+class UIContainer
+{
+
 public:
     /**
      * @brief Default constructor. Creates an empty `UIContainer` object with no elements and a `draw_order` of zero.
@@ -145,7 +138,7 @@ public:
      * @param _element Pointer to the `UIElement` that will be stored.
      * @note Ownership of @p _element will be passed to the `UIContainer` object.
      */
-    void AddElement(std::string id, UIElement* _element);
+    void AddElement(std::string id, UIElement *_element);
     /**
      * @brief Remove an element given by it's unique identifier.
      * @param id String identifier of the desired `UIElement`.
@@ -157,19 +150,19 @@ public:
      * @param id String identifer of the desired `UIElement`.
      * @return A @b non-constant reference to the `UIElement` identified by @p id.
      */
-    UIElement              &GetElement(std::string id);
+    UIElement &GetElement(std::string id);
     /**
      * @brief Get a @b constant reference to a stored `UIElement`.
      * @param id String identifier of the desired `UIElement`.
      * @return A @b constant reference to the `UIElement` identified by @p id.
      */
-    const UIElement        &GetElement(std::string id) const;
+    const UIElement &GetElement(std::string id) const;
 
     /**
      * @brief Get this `UIContainer` object's `draw_order`.
      * @note If 2 `UIElement` objects have different draw orders, the one with the highest order will be drawn above.
      */
-    int  GetDrawOrder() const;
+    int GetDrawOrder() const;
     /**
      * @brief Change this `UIContaier` object's `draw_order` to @p _order.
      * @param _order An integer determining the new order.
@@ -200,6 +193,16 @@ public:
      * @param value Value to set as `display_state` on all stored `UIElement` objects.
      */
     void SetAllVisibilityTo(bool value);
+
+private:
+    /**
+     * @brief Container storing all `UIElement` objects and their `std::string` identifiers.
+     */
+    std::map<std::string, UIElement *> elements;
+    /**
+     * @brief Order in which the `UIContainer` will be drawn.
+     */
+    int draw_order;
 };
 
 /**
@@ -214,23 +217,8 @@ namespace UI
     /**
      * @brief ## Basic button class.
      */
-    class Button : public UIElement {
-    private:
-        Texture2D texture;                      /** @brief Base `Button` texture.                                                 */
-        static Color TINT_PRESS;                /** @brief Tint to apply to the texture when `Button` is pressed.                 */
-        bool hover;                             /** @brief Whether the mouse is hovering over the `Button`.                       */
-        bool press;                             /** @brief Whether `MOUSE_BUTTON_LEFT` is being pressed while `hover` is @b true. */
-        Rectangle hitbox;                       /** @brief Rectangle that defines the bounds of the `Button`                      */
-        std::function<void()> callbackFunction; /** @brief Function to be called when the `Button` is released.                   */
-        /**
-         * @brief Auxiliary function for initializing `Button` parameters.
-         */
-        void InitButton();   
-        /**
-         * @brief Auxiliary function for initializing the `Button` texture.
-         */    
-        void TextureSetup();
-
+    class Button : public UIElement
+    {
 
     public:
         /**
@@ -265,7 +253,7 @@ namespace UI
         void DefineOnPressCallback(std::function<void()> callback);
 
         /**
-         * @brief Run the updating logic on the `Button` object. Calculates `hover` 
+         * @brief Run the updating logic on the `Button` object. Calculates `hover`
          * and `press`, and determine if the `callbackFunction` should be called.
          */
         void Update() override;
@@ -273,6 +261,22 @@ namespace UI
          * @brief Draw the `Button` object.
          */
         void Draw() const override;
+
+    private:
+        Texture2D texture;                      /** @brief Base `Button` texture.                                                 */
+        static Color TINT_PRESS;                /** @brief Tint to apply to the texture when `Button` is pressed.                 */
+        bool hover;                             /** @brief Whether the mouse is hovering over the `Button`.                       */
+        bool press;                             /** @brief Whether `MOUSE_BUTTON_LEFT` is being pressed while `hover` is @b true. */
+        Rectangle hitbox;                       /** @brief Rectangle that defines the bounds of the `Button`                      */
+        std::function<void()> callbackFunction; /** @brief Function to be called when the `Button` is released.                   */
+        /**
+         * @brief Auxiliary function for initializing `Button` parameters.
+         */
+        void InitButton();
+        /**
+         * @brief Auxiliary function for initializing the `Button` texture.
+         */
+        void TextureSetup();
     };
 
     // -------------------
@@ -281,17 +285,13 @@ namespace UI
     /**
      * @brief ## Panel class.
      */
-    class Panel : public UIElement{
-    private:
-        Color   col;                 // Main panel colour.
-        Color   edge_col;            // Panel edge colour.
-        Vector2 dimensions;          // Panel dimensions.
-        unsigned int edge_thickness; // Panel edge thickness.
+    class Panel : public UIElement
+    {
     public:
         /**
-         * @brief Create a new `Panel` with default parameters. 
+         * @brief Create a new `Panel` with default parameters.
          */
-        Panel(Transform2D _transform = {}, Vector2 _dimensions = {0,0}, Color _col = {255, 255, 255, 255}, Color _edge_col = {255, 255, 255, 255}, unsigned int _edge_thickness = 0);
+        Panel(Transform2D _transform = {}, Vector2 _dimensions = {0, 0}, Color _col = {255, 255, 255, 255}, Color _edge_col = {255, 255, 255, 255}, unsigned int _edge_thickness = 0);
 
         /**
          * @brief Draw the panel.
@@ -301,6 +301,12 @@ namespace UI
          * @brief Update the panel.
          */
         void Update() override;
+
+    private:
+        Color col;                   // Main panel colour.
+        Color edge_col;              // Panel edge colour.
+        Vector2 dimensions;          // Panel dimensions.
+        unsigned int edge_thickness; // Panel edge thickness.
     };
 
     // -------------------
@@ -310,18 +316,19 @@ namespace UI
      * @brief ## Label class.
      * @brief Allows for drawing text as a `UIElement`.
      */
-    class Label : public UIElement{
+    class Label : public UIElement
+    {
     public:
         /**
          * @brief Determine whether the position given by the object's `transform` parameter is the `LEFT`, `MIDDLE` or `RIGHT`.
          */
-        enum class ALIGNMENT { LEFT, MIDDLE, RIGHT };
-    protected:
-        Color text_col;         // Label text colour.
-        std::string text;       // Label content.
-        unsigned int text_size; // Label font size.
-        ALIGNMENT alignment;    // Label text alignment.
-    public:
+        enum class ALIGNMENT
+        {
+            LEFT,
+            MIDDLE,
+            RIGHT
+        };
+
         /**
          * @brief Creates a new, empty `Label` object with default parameters.
          */
@@ -331,7 +338,7 @@ namespace UI
          * @brief Get a reference to the text stored in the `Label`.
          * @return A @b non-constant reference to the stored text.
          */
-        std::string       &GetText();
+        std::string &GetText();
         /**
          * @brief Get a @b constant reference to the text stored in the `Label`.
          * @return A @b constant reference to the stored text.
@@ -341,40 +348,40 @@ namespace UI
          * @brief Change the stored text to a new string.
          * @param _text New text to display in the `Label`.
          */
-        void               SetText(std::string _text);
+        void SetText(std::string _text);
 
         /**
          * @brief Get the `Label` object's `font_size`.
          * @return An unsigned integer value that determines the font size.
          */
-        unsigned int       GetFontSize() const;
+        unsigned int GetFontSize() const;
         /**
          * @brief Change the `Label` object's `font_size`.
          * @param _size New size.
          */
-        void               SetFontSize(unsigned int _size);
+        void SetFontSize(unsigned int _size);
 
         /**
          * @brief Check the `Label` object's text alignmnent.
          * @return The `Label` object's `alignment` value.
          */
-        ALIGNMENT         GetAlignment() const;
+        ALIGNMENT GetAlignment() const;
         /**
          * @brief Change the `Label` object's alignment value.
          * @param _alignment The `Label` object's new alignment value.
          */
-        void               SetAlignment(ALIGNMENT _alignment);
+        void SetAlignment(ALIGNMENT _alignment);
 
         /**
          * @brief Get the text colour.
          * @return An 8 bit RGBA value with the colour of the `Label` object's text.
          */
-        Color              GetTextColor() const;
+        Color GetTextColor() const;
         /**
          * @brief Change the text colour.
          * @param color The new colour to display.
          */
-        void               SetTextColor(Color color);
+        void SetTextColor(Color color);
 
         /**
          * @brief Overriden update method. Does nothing.
@@ -385,6 +392,11 @@ namespace UI
          */
         void Draw() const override;
 
+    protected:
+        Color text_col;         // Label text colour.
+        std::string text;       // Label content.
+        unsigned int text_size; // Label font size.
+        ALIGNMENT alignment;    // Label text alignment.
     };
 
     // ---------------------------
@@ -394,11 +406,8 @@ namespace UI
      * @brief ## Image Display class
      * @brief Allows for displaying an Image/Texture2D as a `UIElement`.
      */
-    class ImageDisplay : public UIElement {
-    private:
-        Texture2D image;  // Image to display.
-        Vector2   origin; // Point of origin. Set to {`image`.width / 2.0f, `image`.height / 2.0f} to have the image centered around `transform.position`.
-        Rectangle sr, dr; // Auxiliary rectangles for the `Draw()` method.
+    class ImageDisplay : public UIElement
+    {
     public:
         /**
          * @brief Create an `ImageDisplay` object with default parameters.
@@ -426,6 +435,11 @@ namespace UI
          * @brief Draw the object.
          */
         void Draw() const override;
+
+    private:
+        Texture2D image;  // Image to display.
+        Vector2 origin;   // Point of origin. Set to {`image`.width / 2.0f, `image`.height / 2.0f} to have the image centered around `transform.position`.
+        Rectangle sr, dr; // Auxiliary rectangles for the `Draw()` method.
     };
 
     // ------------------------------
@@ -438,9 +452,8 @@ namespace UI
      * @warning This template class is compatible with all data types compatible with the `std::to_string()` method of the STL.
      */
     template <typename T>
-    class VariableDisplay : public Label{
-    private:
-        const T *variable; // Pointer to the variable to be displayed.
+    class VariableDisplay : public Label
+    {
     public:
         /**
          * @brief Create a new `VariableDisplay` object with default parameters.
@@ -462,6 +475,9 @@ namespace UI
          * @brief Update the display to have the most recent value stored in `variable`.
          */
         void Update() override;
+
+    private:
+        const T *variable; // Pointer to the variable to be displayed.
     };
 
     template <typename T>
@@ -469,7 +485,7 @@ namespace UI
     {
         transform = _transform;
         text_size = _text_size;
-        text_col  = _text_col;
+        text_col = _text_col;
         alignment = _alignment;
     }
 
